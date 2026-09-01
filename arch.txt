@@ -1,0 +1,31 @@
+LangChain
+   ↓
+RAG components / document processing / integrations
+
+LangGraph
+   ↓
+Agent workflow / state machine
+
+ChromaDB
+   ↓
+Vector similarity search
+
+Sentence Transformers
+   ↓
+Embedding generation
+
+Neo4j
+   ↓
+Knowledge graph
+
+PyPDF
+   ↓
+Read PDF documents
+
+python-dotenv
+   ↓
+API keys / configuration
+
+FastAPI
+   ↓
+Backend API
