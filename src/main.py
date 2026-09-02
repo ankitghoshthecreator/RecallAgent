@@ -1,27 +1,41 @@
 from ingestion.loader import load_documents
 from ingestion.chunker import chunk_text
+from retrieval.embedder import Embedder
 
 
-DATA_DIR = "data/raw"
+DATA_DIR = r"D:\contextRag\data\raw"
 
 
 def main():
     documents = load_documents(DATA_DIR)
 
+    chunks = []
+
     for document in documents:
-        chunks = chunk_text(
+        document_chunks = chunk_text(
             document["text"],
-            chunk_size=20,
-            chunk_overlap=5
+            chunk_size=100,
+            chunk_overlap=20
         )
 
-        print("=" * 60)
-        print(f"Document: {document['document_id']}")
-        print(f"Source: {document['source']}")
+        for i, chunk in enumerate(document_chunks):
+            chunks.append({
+                "chunk_id": f"{document['document_id']}_chunk_{i}",
+                "document_id": document["document_id"],
+                "source": document["source"],
+                "text": chunk,
+            })
 
-        for i, chunk in enumerate(chunks):
-            print(f"\nChunk {i}:")
-            print(chunk)
+    print(f"Total chunks: {len(chunks)}")
+
+    embedder = Embedder()
+
+    texts = [chunk["text"] for chunk in chunks]
+
+    embeddings = embedder.embed_documents(texts)
+
+    print(f"Embedding shape: {embeddings.shape}")
+    print(f"First embedding:\n{embeddings[0]}")
 
 
 if __name__ == "__main__":
