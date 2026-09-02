@@ -31,8 +31,8 @@ FastAPI
 Backend API
 
 
-step 1 : build a simple rag with
-Step 2 — Build the simplest RAG
+
+## Step 2 — Build the simplest RAG
 
 Once ingestion works, implement:
 
