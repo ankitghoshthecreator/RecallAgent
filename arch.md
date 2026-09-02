@@ -29,3 +29,23 @@ API keys / configuration
 FastAPI
    ↓
 Backend API
+
+
+step 1 : build a simple rag with
+Step 2 — Build the simplest RAG
+
+Once ingestion works, implement:
+
+Query
+ ↓
+Embedding
+ ↓
+Vector search
+ ↓
+Top-k chunks
+ ↓
+LLM
+ ↓
+Answer
+
+![img.png](img.png)
