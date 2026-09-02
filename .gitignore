@@ -76,9 +76,6 @@ dist/
 *.sqlite
 *.sqlite3
 
-# Ignore local data directory
-data/
-
 # =========================
 # Temporary files
 # =========================

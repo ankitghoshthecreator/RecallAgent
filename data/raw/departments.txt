@@ -1,0 +1,41 @@
+# NovaTech Department Directory
+
+## Research and Development
+
+Department ID: NT-D-01
+
+The Research and Development department is responsible for developing new technologies, machine learning systems, experimental platforms, and engineering capabilities.
+
+The department maintains the Atlas project.
+
+Priya Mehta provides engineering leadership for teams working within the department.
+
+The department includes engineers and researchers working on machine learning and software engineering initiatives.
+
+---
+
+## Finance
+
+Department ID: NT-D-02
+
+The Finance department is responsible for financial planning, forecasting, accounting, budget management, and business reporting.
+
+The department maintains the Mercury project.
+
+Vikram Rao provides financial leadership for the Mercury project.
+
+The department includes financial analysts, managers, and business planning specialists.
+
+---
+
+## Customer Operations
+
+Department ID: NT-D-03
+
+The Customer Operations department is responsible for customer support operations, service quality analysis, and operational analytics.
+
+The department maintains the Orion project.
+
+Meera Nair coordinates the Orion project.
+
+The department includes customer operations analysts and support specialists.

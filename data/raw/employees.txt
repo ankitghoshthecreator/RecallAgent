@@ -1,0 +1,59 @@
+# NovaTech Employee Directory
+
+## Employee: Rahul Sharma
+
+Employee ID: NT-1042
+
+Rahul Sharma is a Machine Learning Engineer at NovaTech. He joined the company in 2023.
+
+Rahul currently works on the Atlas project. His responsibilities include developing machine learning pipelines, evaluating model performance, and maintaining data-processing workflows used by the Atlas team.
+
+Rahul collaborates regularly with Priya Mehta and Arjun Kapoor on technical design and project planning.
+
+---
+
+## Employee: Sneha Iyer
+
+Employee ID: NT-1087
+
+Sneha Iyer is a Senior Financial Analyst at NovaTech. She joined the company in 2022.
+
+Sneha currently works on the Mercury project. Her responsibilities include financial analysis, forecasting, budget tracking, and preparing financial reports for the Mercury team.
+
+Sneha collaborates regularly with Vikram Rao on financial planning and reporting.
+
+---
+
+## Employee: Arjun Kapoor
+
+Employee ID: NT-1021
+
+Arjun Kapoor is a Software Engineer at NovaTech. He joined the company in 2021.
+
+Arjun works on the Atlas project. His responsibilities include backend development, API development, and maintaining internal services used by the Atlas team.
+
+Arjun works closely with Rahul Sharma on technical implementation.
+
+---
+
+## Employee: Vikram Rao
+
+Employee ID: NT-1063
+
+Vikram Rao is a Finance Manager at NovaTech. He joined the company in 2020.
+
+Vikram works on the Mercury project and is responsible for financial planning, budget management, and business reporting.
+
+Vikram works closely with Sneha Iyer on financial analysis and forecasting.
+
+---
+
+## Employee: Priya Mehta
+
+Employee ID: NT-1008
+
+Priya Mehta is a Senior Engineering Manager at NovaTech. She joined the company in 2019.
+
+Priya provides technical leadership for the Atlas project. She is responsible for engineering planning, technical reviews, and coordination between engineering teams.
+
+Priya regularly works with Rahul Sharma and Arjun Kapoor.

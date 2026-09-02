@@ -1,0 +1,49 @@
+# NovaTech Project Registry
+
+## Project: Atlas
+
+Project ID: NT-P-201
+
+Atlas is a machine learning platform developed by NovaTech.
+
+The project focuses on automated model training, evaluation, deployment, and monitoring.
+
+Atlas is maintained by the Research and Development department.
+
+The technical leadership for Atlas is provided by Priya Mehta.
+
+The primary engineering contributors include Rahul Sharma and Arjun Kapoor.
+
+Atlas requires collaboration between machine learning engineering and software engineering teams.
+
+---
+
+## Project: Mercury
+
+Project ID: NT-P-305
+
+Mercury is a financial planning and analytics platform developed by NovaTech.
+
+The project focuses on financial forecasting, budget management, reporting, and business analytics.
+
+Mercury is maintained by the Finance department.
+
+The project receives financial leadership from Vikram Rao.
+
+The primary financial analyst working on Mercury is Sneha Iyer.
+
+---
+
+## Project: Orion
+
+Project ID: NT-P-412
+
+Orion is an internal customer-support analytics platform.
+
+The project focuses on analyzing customer support interactions, identifying recurring issues, and generating operational reports.
+
+Orion is maintained by the Customer Operations department.
+
+The project is coordinated by Meera Nair.
+
+The primary analyst assigned to Orion is Karan Shah.
