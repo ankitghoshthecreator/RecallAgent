@@ -89,6 +89,53 @@ class KnowledgeGraph:
 
         return paths
 
+    def find_paths_to_type(
+            self,
+            start_node: str,
+            target_type: str,
+            max_hops: int = 2
+    ) -> list[list[dict]]:
+
+        paths = []
+
+        def dfs(
+                current_node: str,
+                path: list[dict],
+                depth: int
+        ):
+
+            # We reached the maximum number of hops
+            if depth == max_hops:
+                node = self.nodes.get(current_node)
+
+                if node and node["type"] == target_type:
+                    paths.append(path)
+
+                return
+
+            neighbors = self.get_neighbors(current_node)
+
+            for neighbor in neighbors:
+                step = {
+                    "source": current_node,
+                    "relation": neighbor["relation"],
+                    "target": neighbor["node"]
+                }
+
+                dfs(
+                    neighbor["node"],
+                    path + [step],
+                    depth + 1
+                )
+
+        dfs(
+            start_node,
+            [],
+            0
+        )
+
+        return paths
+
     def show(self):
 
         print("\nNODES")

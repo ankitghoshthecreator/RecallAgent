@@ -1,90 +1,22 @@
-from ingestion.loader import load_documents
-from ingestion.chunker import chunk_text
-from graph.builder import GraphBuilder
-
-
-DATA_DIR = r"D:\contextRag\data\raw"
+from query.analyzer import QueryAnalyzer
 
 
 def main():
 
-    # -----------------------------
-    # 1. Load documents
-    # -----------------------------
+    analyzer = QueryAnalyzer()
 
-    documents = load_documents(DATA_DIR)
+    queries = [
+        "Which department is Rahul associated with?",
+        "What project does Rahul work on?",
+        "Who works on Atlas?"
+    ]
 
-    # -----------------------------
-    # 2. Create chunks
-    # -----------------------------
+    for query in queries:
 
-    chunks = []
+        target_type = analyzer.detect_target_type(query)
 
-
-
-    for document in documents:
-
-        document_chunks = chunk_text(
-            document["text"],
-            chunk_size=100,
-            chunk_overlap=20
-        )
-
-        for i, chunk in enumerate(document_chunks):
-
-            chunks.append({
-                "chunk_id": f"{document['document_id']}_chunk_{i}",
-                "document_id": document["document_id"],
-                "source": document["source"],
-                "text": chunk
-            })
-
-    print(f"Total chunks: {len(chunks)}")
-
-    # -----------------------------
-    # 3. Build knowledge graph
-    # -----------------------------
-
-    graph_builder = GraphBuilder()
-
-    graph = graph_builder.build(chunks)
-
-    # -----------------------------
-    # 4. Display graph
-    # -----------------------------
-
-    graph.show()
-
-    neighbors = graph.get_neighbors("Rahul Sharma")
-
-    print("\nRahul Sharma neighbors:")
-    print("=" * 60)
-
-    for neighbor in neighbors:
-        print(
-            f"Rahul Sharma "
-            f"--{neighbor['relation']}--> "
-            f"{neighbor['node']}"
-        )
-
-    paths = graph.find_paths(
-        start_node="Rahul Sharma",
-        max_hops=2
-    )
-
-    print("\n2-hop paths from Rahul Sharma:")
-    print("=" * 60)
-
-    for path in paths:
-
-        print("\nPATH")
-
-        for step in path:
-            print(
-                f"{step['source']} "
-                f"--{step['relation']}--> "
-                f"{step['target']}"
-            )
+        print(f"\nQuery: {query}")
+        print(f"Target type: {target_type}")
 
 
 if __name__ == "__main__":
