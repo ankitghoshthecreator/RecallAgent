@@ -1,24 +1,71 @@
-from graph.extractor import RelationshipExtractor
+from ingestion.loader import load_documents
+from ingestion.chunker import chunk_text
+from graph.builder import GraphBuilder
+
+
+DATA_DIR = r"D:\contextRag\data\raw"
 
 
 def main():
 
-    extractor = RelationshipExtractor()
+    # -----------------------------
+    # 1. Load documents
+    # -----------------------------
 
-    text = """
-    Rahul Sharma currently works on the Atlas project.
-    Rahul collaborates regularly with Priya Mehta and Arjun Kapoor
-    on technical design and project planning.
+    documents = load_documents(DATA_DIR)
 
-    Atlas is maintained by the Research and Development department.
+    # -----------------------------
+    # 2. Create chunks
+    # -----------------------------
 
-    Priya Mehta provides technical leadership for the Atlas project.
-    """
+    chunks = []
 
-    relationships = extractor.extract(text)
 
-    for relationship in relationships:
-        print(relationship)
+
+    for document in documents:
+
+        document_chunks = chunk_text(
+            document["text"],
+            chunk_size=100,
+            chunk_overlap=20
+        )
+
+        for i, chunk in enumerate(document_chunks):
+
+            chunks.append({
+                "chunk_id": f"{document['document_id']}_chunk_{i}",
+                "document_id": document["document_id"],
+                "source": document["source"],
+                "text": chunk
+            })
+
+    print(f"Total chunks: {len(chunks)}")
+
+    # -----------------------------
+    # 3. Build knowledge graph
+    # -----------------------------
+
+    graph_builder = GraphBuilder()
+
+    graph = graph_builder.build(chunks)
+
+    # -----------------------------
+    # 4. Display graph
+    # -----------------------------
+
+    graph.show()
+
+    neighbors = graph.get_neighbors("Rahul Sharma")
+
+    print("\nRahul Sharma neighbors:")
+    print("=" * 60)
+
+    for neighbor in neighbors:
+        print(
+            f"Rahul Sharma "
+            f"--{neighbor['relation']}--> "
+            f"{neighbor['node']}"
+        )
 
 
 if __name__ == "__main__":
