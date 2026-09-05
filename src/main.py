@@ -67,6 +67,25 @@ def main():
             f"{neighbor['node']}"
         )
 
+    paths = graph.find_paths(
+        start_node="Rahul Sharma",
+        max_hops=2
+    )
+
+    print("\n2-hop paths from Rahul Sharma:")
+    print("=" * 60)
+
+    for path in paths:
+
+        print("\nPATH")
+
+        for step in path:
+            print(
+                f"{step['source']} "
+                f"--{step['relation']}--> "
+                f"{step['target']}"
+            )
+
 
 if __name__ == "__main__":
     main()

@@ -48,6 +48,47 @@ class KnowledgeGraph:
 
         return neighbors
 
+    def find_paths(
+            self,
+            start_node: str,
+            max_hops: int = 2
+    ) -> list[list[dict]]:
+
+        paths = []
+
+        def dfs(
+                current_node: str,
+                path: list[dict],
+                depth: int
+        ):
+
+            if depth == max_hops:
+                paths.append(path)
+                return
+
+            neighbors = self.get_neighbors(current_node)
+
+            for neighbor in neighbors:
+                step = {
+                    "source": current_node,
+                    "relation": neighbor["relation"],
+                    "target": neighbor["node"]
+                }
+
+                dfs(
+                    neighbor["node"],
+                    path + [step],
+                    depth + 1
+                )
+
+        dfs(
+            start_node,
+            [],
+            0
+        )
+
+        return paths
+
     def show(self):
 
         print("\nNODES")
