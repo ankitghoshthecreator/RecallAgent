@@ -73,11 +73,13 @@ def main():
         print("Query:", query)
         print("Entity:", result["entity"])
         print("Target type:", result["target_type"])
+        print("Direction:", result["direction"])
 
         paths = retriever.retrieve(
             entity=result["entity"],
             target_type=result["target_type"],
-            max_hops=2
+            max_hops=2,
+            direction=result["direction"]
         )
 
         print("\nRetrieved paths:")

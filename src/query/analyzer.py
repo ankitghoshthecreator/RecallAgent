@@ -1,59 +1,68 @@
+
 class QueryAnalyzer:
 
-    def __init__(self):
-        self.question_to_type = {
-            "department": "DEPARTMENT",
-            "departments": "DEPARTMENT",
-            "project": "PROJECT",
-            "projects": "PROJECT",
-            "employee": "PERSON",
-            "employees": "PERSON",
-            "person": "PERSON",
-            "people": "PERSON",
-            "who": "PERSON"
-        }
+    # -------------------------
+    # Detect target type
+    # -------------------------
 
-        self.entity_aliases = {
-            "rahul": "Rahul Sharma",
-            "rahul sharma": "Rahul Sharma",
-            "arjun": "Arjun Kapoor",
-            "arjun kapoor": "Arjun Kapoor",
-            "priya": "Priya Mehta",
-            "priya mehta": "Priya Mehta",
-            "sneha": "Sneha Iyer",
-            "sneha iyer": "Sneha Iyer",
-            "vikram": "Vikram Rao",
-            "vikram rao": "Vikram Rao",
+    def detect_target_type(self, query: str) -> str:
 
-            "atlas": "Atlas",
-            "mercury": "Mercury",
-            "orion": "Orion",
+        query = query.lower()
 
-            "research and development": "Research and Development",
-            "finance": "Finance",
-            "customer operations": "Customer Operations"
-        }
+        if "department" in query:
+            return "DEPARTMENT"
 
-    def detect_target_type(self, query: str) -> str | None:
-        query_lower = query.lower()
+        if "project" in query:
+            return "PROJECT"
 
-        for keyword, node_type in self.question_to_type.items():
-            if keyword in query_lower:
-                return node_type
+        if "who" in query:
+            return "PERSON"
 
-        return None
+        return "UNKNOWN"
 
-    def detect_entity(self, query: str) -> str | None:
-        query_lower = query.lower()
+    # -------------------------
+    # Detect entity
+    # -------------------------
 
-        for alias, entity in self.entity_aliases.items():
-            if alias in query_lower:
-                return entity
+    def detect_entity(self, query: str) -> str:
 
-        return None
+        query = query.lower()
+
+        if "rahul" in query:
+            return "Rahul Sharma"
+
+        if "atlas" in query:
+            return "Atlas"
+
+        if "mercury" in query:
+            return "Mercury"
+
+        if "orion" in query:
+            return "Orion"
+
+        return "UNKNOWN"
+
+    # -------------------------
+    # Detect traversal direction
+    # -------------------------
+
+    def detect_direction(self, query: str) -> str:
+
+        query = query.lower()
+
+        if "who works on" in query:
+            return "backward"
+
+        return "forward"
+
+    # -------------------------
+    # Analyze complete query
+    # -------------------------
 
     def analyze(self, query: str) -> dict:
+
         return {
             "entity": self.detect_entity(query),
-            "target_type": self.detect_target_type(query)
+            "target_type": self.detect_target_type(query),
+            "direction": self.detect_direction(query)
         }
