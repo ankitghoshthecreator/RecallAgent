@@ -1,8 +1,12 @@
 from ingestion.loader import load_documents
 from ingestion.chunker import chunk_text
+
 from graph.builder import GraphBuilder
-from query.analyzer import QueryAnalyzer
 from graph.retriever import GraphRetriever
+
+from query.analyzer import QueryAnalyzer
+
+from agent.retrieval_agent import RetrievalAgent
 
 
 DATA_DIR = r"D:\contextRag\data\raw"
@@ -10,11 +14,18 @@ DATA_DIR = r"D:\contextRag\data\raw"
 
 def main():
 
-    # -------------------------
+    # ============================================================
     # 1. Load documents
-    # -------------------------
+    # ============================================================
 
     documents = load_documents(DATA_DIR)
+
+    print(f"Loaded documents: {len(documents)}")
+
+
+    # ============================================================
+    # 2. Chunk documents
+    # ============================================================
 
     chunks = []
 
@@ -35,62 +46,106 @@ def main():
                 "text": chunk
             })
 
+
     print(f"Total chunks: {len(chunks)}")
 
 
-    # -------------------------
-    # 2. Build graph
-    # -------------------------
+    # ============================================================
+    # 3. Build knowledge graph
+    # ============================================================
 
     graph_builder = GraphBuilder()
+
     graph = graph_builder.build(chunks)
 
-    retriever = GraphRetriever(graph)
+
+    # ============================================================
+    # 4. Create graph retriever
+    # ============================================================
+
+    graph_retriever = GraphRetriever(graph)
 
 
-    # -------------------------
-    # 3. Query analyzer
-    # -------------------------
+    # ============================================================
+    # 5. Create query analyzer
+    # ============================================================
 
     analyzer = QueryAnalyzer()
 
+
+    # ============================================================
+    # 6. Create retrieval agent
+    # ============================================================
+
+    agent = RetrievalAgent(
+        analyzer=analyzer,
+        retriever=graph_retriever
+    )
+
+
+    # ============================================================
+    # 7. Test queries
+    # ============================================================
+
     queries = [
+
         "Which department is Rahul associated with?",
+
         "What project does Rahul work on?",
+
         "Who works on Atlas?"
+
     ]
 
 
-    # -------------------------
-    # 4. Query-driven retrieval
-    # -------------------------
+    # ============================================================
+    # 8. Run agent
+    # ============================================================
 
     for query in queries:
 
-        result = analyzer.analyze(query)
+        result = agent.run(query)
 
-        result = analyzer.analyze(query)
 
         print("\n" + "=" * 60)
-        print("Query:", query)
-        print("Entity:", result["entity"])
-        print("Target type:", result["target_type"])
-        print("Relation:", result["relation"])
-        print("Direction:", result["direction"])
 
-        paths = retriever.retrieve(
-            entity=result["entity"],
-            target_type=result["target_type"],
-            relation=result["relation"],
-            max_hops=2,
-            direction=result["direction"]
-        )
+        print("QUERY")
+        print(query)
 
-        print("\nRetrieved paths:")
+
+        # --------------------------------------------------------
+        # Show agent plan
+        # --------------------------------------------------------
+
+        print("\nAGENT PLAN")
+        print("-" * 60)
+
+        plan = result["plan"]
+
+        print("Strategy:", plan["strategy"])
+        print("Entity:", plan["entity"])
+        print("Target type:", plan["target_type"])
+        print("Relation:", plan["relation"])
+        print("Direction:", plan["direction"])
+        print("Max hops:", plan["max_hops"])
+
+
+        # --------------------------------------------------------
+        # Show retrieved paths
+        # --------------------------------------------------------
+
+        print("\nRETRIEVED PATHS")
+        print("-" * 60)
+
+        paths = result["paths"]
+
 
         if not paths:
+
             print("No paths found.")
+
             continue
+
 
         for path in paths:
 

@@ -116,6 +116,12 @@ But we don't want just a list of entities.
 We also need their relationships.
 
 ### for this we do not use llm rather we go for graph based knoowledge
+
+
+
+# missing some steps 
+
+
                     USER QUERY
                         │
                         ▼
@@ -145,3 +151,26 @@ We also need their relationships.
                         │
                         ▼
                     Evidence
+
+
+## eventually
+
+                     Agent
+                       │
+              ┌────────┼────────┐
+              ▼        ▼        ▼
+           Graph     Vector   Both
+              │        │        │
+              └────────┼────────┘
+                       ▼
+                    Evidence
+                       │
+                       ▼
+                     Agent
+                       │
+              Enough evidence?
+                 /          \
+               No            Yes
+               │              │
+          Search again       Answer
+
