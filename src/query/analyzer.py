@@ -1,4 +1,3 @@
-
 class QueryAnalyzer:
 
     # -------------------------
@@ -19,6 +18,7 @@ class QueryAnalyzer:
             return "PERSON"
 
         return "UNKNOWN"
+
 
     # -------------------------
     # Detect entity
@@ -42,6 +42,30 @@ class QueryAnalyzer:
 
         return "UNKNOWN"
 
+
+    # -------------------------
+    # Detect relationship
+    # -------------------------
+
+    def detect_relation(self, query: str) -> str:
+
+        query = query.lower()
+
+        if "works on" in query or "work on" in query:
+            return "WORKS_ON"
+
+        if "maintained by" in query:
+            return "MAINTAINED_BY"
+
+        if "leads" in query:
+            return "LEADS"
+
+        if "collaborates with" in query:
+            return "COLLABORATES_WITH"
+
+        return "UNKNOWN"
+
+
     # -------------------------
     # Detect traversal direction
     # -------------------------
@@ -55,6 +79,7 @@ class QueryAnalyzer:
 
         return "forward"
 
+
     # -------------------------
     # Analyze complete query
     # -------------------------
@@ -64,5 +89,6 @@ class QueryAnalyzer:
         return {
             "entity": self.detect_entity(query),
             "target_type": self.detect_target_type(query),
+            "relation": self.detect_relation(query),
             "direction": self.detect_direction(query)
         }

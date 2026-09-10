@@ -116,3 +116,32 @@ But we don't want just a list of entities.
 We also need their relationships.
 
 ### for this we do not use llm rather we go for graph based knoowledge
+                    USER QUERY
+                        │
+                        ▼
+                 ┌──────────────┐
+                 │ QueryAnalyzer│
+                 └──────┬───────┘
+                        │
+        ┌───────────────┼────────────────┐
+        ▼               ▼                ▼
+      Entity        Target Type       Relation
+        │               │                │
+        └───────────────┼────────────────┘
+                        ▼
+                    Direction
+                        │
+                        ▼
+                 GraphRetriever
+                        │
+                        ▼
+                 KnowledgeGraph
+                        │
+                        ▼
+                     Paths
+                        │
+                        ▼
+                  Path Filtering
+                        │
+                        ▼
+                    Evidence

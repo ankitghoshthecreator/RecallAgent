@@ -69,15 +69,19 @@ def main():
 
         result = analyzer.analyze(query)
 
+        result = analyzer.analyze(query)
+
         print("\n" + "=" * 60)
         print("Query:", query)
         print("Entity:", result["entity"])
         print("Target type:", result["target_type"])
+        print("Relation:", result["relation"])
         print("Direction:", result["direction"])
 
         paths = retriever.retrieve(
             entity=result["entity"],
             target_type=result["target_type"],
+            relation=result["relation"],
             max_hops=2,
             direction=result["direction"]
         )

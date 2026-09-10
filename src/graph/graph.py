@@ -1,9 +1,9 @@
-
 class KnowledgeGraph:
 
     def __init__(self):
         self.nodes = {}
         self.edges = set()
+
 
     # -------------------------
     # Add node
@@ -15,12 +15,15 @@ class KnowledgeGraph:
         node_type: str,
         name: str
     ):
+
         if node_id not in self.nodes:
+
             self.nodes[node_id] = {
                 "id": node_id,
                 "type": node_type,
                 "name": name
             }
+
 
     # -------------------------
     # Add edge
@@ -32,6 +35,7 @@ class KnowledgeGraph:
         relation: str,
         target: str
     ):
+
         edge = (
             source,
             relation,
@@ -39,6 +43,7 @@ class KnowledgeGraph:
         )
 
         self.edges.add(edge)
+
 
     # -------------------------
     # Get outgoing neighbors
@@ -62,6 +67,7 @@ class KnowledgeGraph:
 
         return neighbors
 
+
     # -------------------------
     # Get incoming neighbors
     # -------------------------
@@ -84,8 +90,9 @@ class KnowledgeGraph:
 
         return neighbors
 
+
     # -------------------------
-    # Find arbitrary paths
+    # Find arbitrary forward paths
     # -------------------------
 
     def find_paths(
@@ -132,6 +139,7 @@ class KnowledgeGraph:
 
         return paths
 
+
     # -------------------------
     # Find paths to target type
     # -------------------------
@@ -140,6 +148,7 @@ class KnowledgeGraph:
         self,
         start_node: str,
         target_type: str,
+        relation: str = "UNKNOWN",
         max_hops: int = 2,
         direction: str = "forward"
     ) -> list[list[dict]]:
@@ -152,7 +161,10 @@ class KnowledgeGraph:
             depth: int
         ):
 
-            # Check if current node is target type
+            # -------------------------
+            # Check target node
+            # -------------------------
+
             if depth > 0:
 
                 node = self.nodes.get(current_node)
@@ -163,10 +175,14 @@ class KnowledgeGraph:
 
                     return
 
-            # Stop at maximum hops
-            if depth == max_hops:
 
+            # -------------------------
+            # Stop at max hops
+            # -------------------------
+
+            if depth == max_hops:
                 return
+
 
             # -------------------------
             # Forward traversal
@@ -174,9 +190,18 @@ class KnowledgeGraph:
 
             if direction == "forward":
 
-                neighbors = self.get_neighbors(current_node)
+                neighbors = self.get_neighbors(
+                    current_node
+                )
 
                 for neighbor in neighbors:
+
+                    # Filter by relation
+                    if (
+                        relation != "UNKNOWN"
+                        and neighbor["relation"] != relation
+                    ):
+                        continue
 
                     step = {
                         "source": current_node,
@@ -190,22 +215,36 @@ class KnowledgeGraph:
                         depth + 1
                     )
 
+
             # -------------------------
             # Backward traversal
             # -------------------------
 
             elif direction == "backward":
 
-                neighbors = self.get_incoming_neighbors(current_node)
+                neighbors = self.get_incoming_neighbors(
+                    current_node
+                )
 
                 for neighbor in neighbors:
 
+                    # Filter by relation
+                    if (
+                        relation != "UNKNOWN"
+                        and neighbor["relation"] != relation
+                    ):
+                        continue
+
                     # IMPORTANT:
-                    # The graph relationship itself is still:
+                    #
+                    # The stored relationship is:
                     #
                     # Rahul --WORKS_ON--> Atlas
                     #
-                    # We are only traversing it backwards.
+                    # We are traversing it backwards,
+                    # but the relationship itself remains:
+                    #
+                    # Rahul --WORKS_ON--> Atlas
 
                     step = {
                         "source": neighbor["node"],
@@ -219,11 +258,14 @@ class KnowledgeGraph:
                         depth + 1
                     )
 
+
             else:
 
                 raise ValueError(
-                    "direction must be 'forward' or 'backward'"
+                    "direction must be "
+                    "'forward' or 'backward'"
                 )
+
 
         dfs(
             start_node,
@@ -232,6 +274,7 @@ class KnowledgeGraph:
         )
 
         return paths
+
 
     # -------------------------
     # Display graph
@@ -253,11 +296,12 @@ class KnowledgeGraph:
         print("\nEDGES")
         print("=" * 60)
 
-        for source, relation, target in sorted(self.edges):
+        for source, relation, target in sorted(
+            self.edges
+        ):
 
             print(
                 f"{source} "
                 f"--{relation}--> "
                 f"{target}"
             )
-
