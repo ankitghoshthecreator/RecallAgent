@@ -2,6 +2,7 @@ from ingestion.loader import load_documents
 from ingestion.chunker import chunk_text
 from graph.builder import GraphBuilder
 from query.analyzer import QueryAnalyzer
+from graph.retriever import GraphRetriever
 
 
 DATA_DIR = r"D:\contextRag\data\raw"
@@ -38,16 +39,17 @@ def main():
 
 
     # -------------------------
-    # 2. Build knowledge graph
+    # 2. Build graph
     # -------------------------
 
     graph_builder = GraphBuilder()
-
     graph = graph_builder.build(chunks)
+
+    retriever = GraphRetriever(graph)
 
 
     # -------------------------
-    # 3. Analyze queries
+    # 3. Query analyzer
     # -------------------------
 
     analyzer = QueryAnalyzer()
@@ -58,39 +60,43 @@ def main():
         "Who works on Atlas?"
     ]
 
+
+    # -------------------------
+    # 4. Query-driven retrieval
+    # -------------------------
+
     for query in queries:
 
         result = analyzer.analyze(query)
 
-        print("\nQuery:", query)
+        print("\n" + "=" * 60)
+        print("Query:", query)
         print("Entity:", result["entity"])
         print("Target type:", result["target_type"])
 
+        paths = retriever.retrieve(
+            entity=result["entity"],
+            target_type=result["target_type"],
+            max_hops=2
+        )
 
-    # -------------------------
-    # 4. Test graph traversal
-    # -------------------------
+        print("\nRetrieved paths:")
 
-    department_paths = graph.find_paths_to_type(
-        start_node="Rahul Sharma",
-        target_type="DEPARTMENT",
-        max_hops=2
-    )
+        if not paths:
+            print("No paths found.")
+            continue
 
-    print("\nPaths from Rahul Sharma to DEPARTMENT:")
-    print("=" * 60)
+        for path in paths:
 
-    for path in department_paths:
+            print("\nPATH")
 
-        print("\nPATH")
+            for step in path:
 
-        for step in path:
-
-            print(
-                f"{step['source']} "
-                f"--{step['relation']}--> "
-                f"{step['target']}"
-            )
+                print(
+                    f"{step['source']} "
+                    f"--{step['relation']}--> "
+                    f"{step['target']}"
+                )
 
 
 if __name__ == "__main__":

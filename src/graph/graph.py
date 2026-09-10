@@ -93,7 +93,8 @@ class KnowledgeGraph:
             self,
             start_node: str,
             target_type: str,
-            max_hops: int = 2
+            max_hops: int = 2,
+            direction: str = "forward"
     ) -> list[list[dict]]:
 
         paths = []
@@ -104,16 +105,27 @@ class KnowledgeGraph:
                 depth: int
         ):
 
-            # We reached the maximum number of hops
-            if depth == max_hops:
-                node = self.nodes.get(current_node)
+            # Check whether we reached the target type
+            node = self.nodes.get(current_node)
 
-                if node and node["type"] == target_type:
-                    paths.append(path)
-
+            if depth > 0 and node and node["type"] == target_type:
+                paths.append(path)
                 return
 
-            neighbors = self.get_neighbors(current_node)
+            # Stop if maximum hops reached
+            if depth == max_hops:
+                return
+
+            if direction == "forward":
+                neighbors = self.get_neighbors(current_node)
+
+            elif direction == "backward":
+                neighbors = self.get_incoming_neighbors(current_node)
+
+            else:
+                raise ValueError(
+                    "direction must be 'forward' or 'backward'"
+                )
 
             for neighbor in neighbors:
                 step = {
@@ -135,6 +147,20 @@ class KnowledgeGraph:
         )
 
         return paths
+
+    def get_incoming_neighbors(self, node_name: str) -> list[dict]:
+
+        neighbors = []
+
+        for source, relation, target in self.edges:
+
+            if target == node_name:
+                neighbors.append({
+                    "node": source,
+                    "relation": relation
+                })
+
+        return neighbors
 
     def show(self):
 
